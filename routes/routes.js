@@ -7,8 +7,10 @@ const routes=express.Router()
 routes.use(express.urlencoded({extended:true}))
 routes.use(express.json())
 
-routes.route("/user").post(user)
-routes.route("/create-event").post(event)
-routes.route("/event-registration").post(registration)
+routes.route("/user").post(user.createUser)
+routes.route("/create-event").post(event.createEvent)
+routes.route("/event-registration").post(registration.registerEvent)
+routes.route("/get-event/:id").get(event.getEventData)
+
 
 module.exports=routes

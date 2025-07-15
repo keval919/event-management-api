@@ -21,4 +21,8 @@ const createUser=async (req,res)=>{
     }
 }
 
-module.exports=createUser
+const user={
+    createUser
+}
+
+module.exports=user

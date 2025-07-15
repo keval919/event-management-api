@@ -1,6 +1,7 @@
 const db=require("../models/db")
 const query=require("../models/query")
 
+const maxEventRegistration=parseInt(process.env.MAX_EVENT_REGISTRATIONS)
 
 const createEvent=async (req,res)=>{
     const {title,description,date,location,user_id}=req.body
@@ -9,17 +10,21 @@ const createEvent=async (req,res)=>{
             error:"All fields are required"
         })
     }
+    if(new Date(date).getDate()==NaN){
+        return res.status(400).json({
+            message:"Invalid Date Time Format"
+        })
+    }
     try{
         const result=await db.query(query.events.createEvent,[title,description,date,location,user_id])
         return res.status(200).json({
             message:"Event Created Sucessfully",
-            event_id:result[0].event_id
+            event_id:result.rows[0].event_id
         })
     }
     catch(err){
         return res.status(500).json({
-            error:"Fail to create event",
-            a:err
+            error:err,
         })
     }
 }
@@ -31,6 +36,7 @@ const getEventData= async (req,res)=>{
             message:"Event ID is blank"
         })
     }
+    res.send("ok")
     try{
         const eventData=await db.query(query.events.getEventByID,[event_id])
         if(!eventData){
@@ -57,10 +63,41 @@ const getEventData= async (req,res)=>{
     }
 }
 
+const eventStats= async(req,res)=>{
+    const event_id=req.params.id
+    if(!event_id){
+        return res.status(404).json({
+            message:"Event ID is blank"
+        })
+    }
+    try{
+    const registration_count=await db.query(query.events.getRegistrationCount,[event_id])
+    if(!registration_count.rowCount){
+        return res.status(404).json({
+            message:"Event Id does not exist"
+        })
+    }
+    const totalRegistrations=registration_count.rows[0].registration_count
+    const remainingCapacity=maxEventRegistration-totalRegistrations
+    const capacityPercentage=(remainingCapacity/maxEventRegistration)*100
+    return res.status(200).json({
+        totalRegistrations,
+        remainingCapacity,
+        capacityPercentage
+    })
+    }
+    catch(err){
+        return res.status(500).json({
+            message:"Internal server error"
+        })
+    }
+}
+
 
 const event={
     createEvent,
-    getEventData
+    getEventData,
+    eventStats
 }
 
 module.exports=event

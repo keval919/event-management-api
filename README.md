@@ -29,6 +29,16 @@ It handles user creation, event registrations, event listing, and cancellation l
 
 ---
 
+---
+### Set Up Instructions ###
+
+insert a credentials into .env file given with repository to setup hosting and 
+listen on port eigher 4545 or give port in .env file
+
+---
+
+---
+
 root----|
         |---server.js
         |---schema.sql

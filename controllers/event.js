@@ -3,11 +3,12 @@ const query=require("../models/query")
 
 const maxEventRegistration=parseInt(process.env.MAX_EVENT_REGISTRATIONS)
 
+// for /create-event
 const createEvent=async (req,res)=>{
     const {title,description,date,location,user_id}=req.body
     if(!title || !description || !date || !location || !user_id){
         return res.status(400).json({
-            error:"All fields are required"
+            message:"All fields are required"
         })
     }
     if(new Date(date).getDate()==NaN){
@@ -29,15 +30,12 @@ const createEvent=async (req,res)=>{
     }
 }
 
+// for /get-event/:id
 const getEventData= async (req,res)=>{
     const event_id=req.params.id
-    if(!event_id){
-        return res.status(404).json({
-            message:"Event ID is blank"
-        })
-    }
-    res.send("ok")
+
     try{
+        console.log(event_id)
         const eventData=await db.query(query.events.getEventByID,[event_id])
         if(!eventData){
             return res.status(404).json({
@@ -57,12 +55,12 @@ const getEventData= async (req,res)=>{
     }
     catch(err){
         res.status(500).json({
-            message:"Enternal Server Error",
-            err
+            message:"Internal Server Error"
         })
     }
 }
 
+// for /event-stats/:id
 const eventStats= async(req,res)=>{
     const event_id=req.params.id
     if(!event_id){

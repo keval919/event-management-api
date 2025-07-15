@@ -2,6 +2,7 @@ const db=require("../models/db")
 const query=require("../models/query")
 const maxEventRegistration=parseInt(process.env.MAX_EVENT_REGISTRATIONS)
 
+// for /event-registration
 const registerEvent=async (req,res)=>{
     const {user_id,event_id}=req.body
     if(!user_id || !event_id){
@@ -60,13 +61,14 @@ const registerEvent=async (req,res)=>{
     }
 }
 
+// for /cancel-registration/:event_id
 const cancelRegistration=async (req,res)=>{
     const event_id=req.params.event_id
     const {user_id}=req.body
 
-    if(!user_id || !event_id){
+    if(!user_id){
         return res.status(400).json({
-            error:"User and Event id required"
+            message:"User id required"
         })
     }
     const client=await db.connect()

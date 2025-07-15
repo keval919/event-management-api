@@ -73,9 +73,8 @@ user_id=1
 ```
 
 **Response:**
-```json
+
 json format registred event info
-```
 
 ---
 
@@ -154,8 +153,8 @@ user_id=1
 **GET** `/upcoming-events/future-events`  
 
 **Response:**
-```json format events data which are comes in future
-```
+json format events data which are comes in future
+
 
 ---
 
@@ -163,8 +162,8 @@ user_id=1
 **GET** `/upcoming-events/by-alphabetic-order`  
 
 **Response:**
-```json format events data in alphabetical order of location
-```
+json format events data in alphabetical order of location
+
 
 ---
 
@@ -172,8 +171,8 @@ user_id=1
 **GET** `/upcoming-events/by-ascending-date`  
 
 **Response:**
-```json format events data base on ascending time sorting
-```
+json format events data base on ascending time sorting
+
 
 ---
 
